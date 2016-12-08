@@ -1,0 +1,52 @@
+{% extends "header.html" %}
+{% block body %}
+
+<div class="container" style="text-align:center"><h3 class="card-text"> Search Results </h3></div>
+
+<div class="container">
+<div class="container" style="text-align:left"><h3 class="card-text"> Actors</h3></div>
+	<div class="row">
+	{% if mlist %}
+
+		{% for mist,alist in mlist.items() %}
+
+			{% for al in alist %}
+			<div class="abc">
+				<img src="{{url_for('static',filename='poster_img/'+ al +'.jpg')}}" style="height:200px">
+				<a href="{{'-'.join(al.split(' '))}}"<h4 class="card-text">{{ al.upper() }}</h4></a>
+				<h4 class="card-text">{{ mist }}</h4>
+			</div>
+			{% endfor %}	
+		
+		{% endfor %}
+
+	{% else %}
+
+		<h4 style="text-align:center"> No match found </h4>
+		
+	{% endif %}
+	</div>
+<div class="container" style="text-align:left"><h3 class="card-text"> Movies</h3></div>
+	<div class="row">
+	{% if m_id %}
+
+		{% for mo,mplot in m_id.items() %}
+
+			<div class="abc">
+				<img src="{{url_for('static',filename='poster_img/'+ mo +'.jpg')}}" style="height:200px">
+				<a href="{{'-'.join(mo.split(' '))}}"<h4 class="card-text">{{ mo.upper() }}</h4></a>
+				<p>{{mplot[:70]+"..."}}</p>
+			</div>
+		
+		{% endfor %}
+
+	{% else %}
+
+		<h4 style="text-align:center"> No match found </h4>
+		
+	{% endif %}
+	</div>	
+	
+</div>	
+
+{% endblock %}

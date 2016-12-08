@@ -1,0 +1,22 @@
+{% extends "header.html" %}
+{% block body %}
+	
+<p>{{(session['username']).upper()}},your Profile consists of your purchased/rented movies</p>
+<p> NOTE: Rented movies last for only 3 days after you Purchase </p>	
+
+<div class="container" style="text-align:center"><h3 class="card-text"> Rented Movies </h3></div>
+
+{% for mlist in mst %}
+	<div class="abcd">
+		<img src="{{url_for('static',filename='poster_img/'+ mlist +'.jpg')}}" style="height:200px">
+		<a href="{{mlist.replace(' ','-')}}"<h4 class="card-text" >{{ mlist }}</h4></a>
+	</div>
+{% endfor %}	
+<div class="container" style="text-align:center"><h3 class="card-text"> Jivan-Bhar-Ki-Shanti Movies </h3></div>
+{% for mlist in bmst %}
+	<div class="abcd">
+		<img src="{{url_for('static',filename='poster_img/'+ mlist +'.jpg')}}" style="height:200px">
+		<a href="{{mlist.replace(' ','-')}}"<h4 class="card-text" >{{ mlist }}</h4></a>
+	</div>
+{% endfor %}	
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "header.html" %}
+
+{% block body %}
+<div class="container" style="text-align:center"><h3 class="card-text"> {{movie[0].upper()}} </h3></div>
+
+<div class="container">
+
+	<div class="col-md-4" >
+		<img src="{{movie[7]}}" style="margin-left:100px;margin-top:20px;height:365px">
+	</div>	
+	<div class="col-md-8" style="margin-bottom:100px">
+		<p style="margin-top:50px;margin-left:50px">{{movie[1]}}</p>
+		
+	
+		<div class="col-md-4"style="margin-top:30px;margin-left:50px">
+			<h3 class="card-text"> Actors</h3>
+			{%for actor in movie[3]%}
+			<p class="card-text">{{actor}}</p>
+			{%endfor%}
+		
+		</div>
+		
+		<form action="/{{'-'.join(movie[0].split(' '))}}/checkout" method="POST">
+		{% if buyp %}
+			<div class="col-md-2" style="margin-top:100px" >
+			<button class="btn btn-warning" name="submit" value="rent" disabled="disabled">
+						<span aria-hidden="true"> rent</span>
+					</button>
+			</div>
+			<div class="col-md-2" style="margin-top:100px">
+					<button class="btn btn-success" name="submit" value="buy" disabled="disabled">
+						<span aria-hidden="true"> buy </span>
+					</button>
+			</div>
+		</form>	
+		{% else %}
+		<form action="/{{'-'.join(movie[0].split(' '))}}/checkout" method="POST">
+			{% if p %}
+			<div class="col-md-2" style="margin-top:100px" >
+					<button class="btn btn-warning" name="submit" value="rent" disabled="disabled">
+						<span aria-hidden="true"> rent</span>
+					</button>
+			</div>
+			{% else %}
+				<div class="col-md-2" style="margin-top:100px" >
+					<button class="btn btn-warning" name="submit" value="rent">
+						<span aria-hidden="true"> rent</span>
+					</button>
+			</div>
+			{% endif %}
+			<div class="col-md-2" style="margin-top:100px">
+					<button class="btn btn-success" name="submit" value="buy">
+						<span aria-hidden="true"> buy </span>
+					</button>
+			</div>
+		{% endif %}	
+		</form>	
+			<div class="col-md-2" style="margin-top:100px">
+				{% if p or buyp%}
+				<button class="btn btn-primary">
+				<span class="glyphicon glyphicon-film" aria-hidden="true"> Watch Movie</span>
+				</button>
+				{% else %}
+				<button class="btn btn-primary" disabled="disabled">
+				<span class="glyphicon glyphicon-film" aria-hidden="true"> Watch Movie</span>
+				</button>
+				{% endif %}
+			</div>	
+	</div>	
+		
+
+	<div class="col-md-3" style="margin-top:50px; border:0px">
+		<h3 class="card-text"> Genre</h3>
+		{%for genre in movie[2]%}
+			<p class="card-text">{{genre}}</p>
+		{%endfor%}
+	</div>
+	<div class="col-md-3" style="margin-top:50px">
+		<h3 class="card-text"> Ratings</h3>
+		<p	style="text-align:left">{{movie[4]+"/10"}}</p>
+	</div>
+	<div class="col-md-3" style="margin-top:50px">
+		<h3 class="card-text"> Released date</h3>
+		<p>{{movie[6]}}</p>
+	</div>
+	<div class="col-md-3" style="margin-top:50px">
+		<h3 class="card-text"> Runtime</h3>
+		<p>{{movie[5]}}</p>
+	</div>
+		
+		
+</div>
+
+
+{% endblock%}

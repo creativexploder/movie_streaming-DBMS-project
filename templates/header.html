@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Online Movie Streaming</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css"> 
+		.abc{
+		display:inline-block;
+		height: 100px;
+		width: 100px;
+		margin-left: 150px;
+		margin-top: 50 px;
+		margin-bottom:50px;
+		}
+		.abcd{
+		display:inline-block;
+		height: 50px;
+		width: 130px;
+		margin-left: 50px;
+		margin-top: 50 px;
+		margin-bottom:50px;
+		}
+		
+		.intro{
+		display:table;
+		height:auto;
+		padding:100px 0;
+		text-align:center;
+		color:#fff;
+		background:url(/static/images/images.jpg) bottom center no-repeat #000;
+		-webkit-background-size:cover;
+		-moz-background-size:cover;
+		background-size:cover;
+		-o-background-size:cover
+			}
+		
+	</style>
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='mainlogo.png') }}">
+	
+	
+	
+</head>
+
+<header> 
+<div class="row">
+	  <div class="col-md-2">
+      
+      <a class="navbar-brand" href="/">
+	  <img class="img-responsive" style= "max-width:120px; margin-top:-7px;" src="{{url_for('static',filename='images/mainlogo.png')}}"></a>
+	  </div>
+	  
+	  
+	  
+	<div class="col-md-2 container-fluid">
+
+		<a href="/dashboard/"><button type="button" class="btn btn-primary" aria-label="Left Align" 
+			style="height: 44px; margin-top: 5px; margin-bottom: 5px;" >
+			<span class="glyphicon glyphicon-play" aria-hidden="true"> Start Streaming</span>
+		</button></a>
+	</div>
+	<div class="col-md-4">
+				<form action="/search" method="POST" class="search-form">
+					<div class="form-group has-feedback">
+						<label for="search" class="sr-only">Search</label>
+						<input type="text" style="margin-top:5px" class="form-control" name="search" id="search" placeholder="search" value="{{ request.form.search}}">
+						<span class="glyphicon glyphicon-search form-control-feedback"></span>
+					</div>
+				</form>
+	</div>
+	<div class="col-md-4">
+		<ul class="nav navbar-nav navbar-right">
+		  
+		<div style="margin-right: 10px; margin-left: 15px; margin-top: 5px; margin-bottom: 5px;"  class="container-fluid">
+			<h5>
+			
+			{% if session.logged_in %}
+			<!--<a href="/logout/"><span class="glyphicon glyphicon-log-in"></span> Logout   </a>	-->
+			<div class="dropdown">
+			<a href="/support-donate/"> <span class="glyphicon glyphicon-heart"></span> Support   </a>
+			<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				<span class="glyphicon glyphicon-user"></span>
+				{{(session['username']).upper()}}
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				<li><a href="/profile/">Profile</a></li>
+				<li><a href="/bills/">Billing</a></li>
+				<li><a href="/history/">Purchase History</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="/logout/	">Logout</a></li>
+			 </ul>
+			</div>
+			
+			{% else %}
+			<a href="/support-donate/"> <span class="glyphicon glyphicon-heart"></span> Support   </a>
+			<a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login   </a>	
+			<a href="/signup/"><span class="glyphicon glyphicon-pencil"></span> Sign up</a>
+			{% endif %}
+			</h5>
+		</div>
+      </ul>
+	</ul>
+	</div>	  
+</header>
+
+
+<body>
+	
+	<div class="container-fluid" style="min-height:100% width:80%">
+		{% with messages = get_flashed_messages() %}
+		  {% if messages %}
+			{% for message in messages %}
+			  <div class="alert alert-warning alert-dismissible" role="alert">
+			  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				{{message}}
+			  </div>
+			{% endfor %}
+		  {% endif %}
+		{% endwith %}
+	
+	
+		{% block body %}{% endblock %}
+	
+	</div>
+	
+	
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	
+</body>
+ 
+
+</html>

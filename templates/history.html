@@ -1,0 +1,30 @@
+{% extends "header.html" %}
+{% block body %}
+
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+<div class="container">
+<table style="width:80%; margin-top:50px; margin-left:70px;text-align:center">
+	<tr>
+	<th style="text-align:center">Movie</th>
+	<th style="text-align:center">Date-Time</th>
+	<th style="text-align:center">Purchase Type</th>
+	</tr>
+	{% for i in range(0,a) %}
+	
+		<tr>
+		<td><img src="{{url_for('static',filename='poster_img/' + his[i][0] + '.jpg')}}" style="height:200px;margin-top:">
+			<p>{{his[i][0]}}</p></td>
+		<td>{{his[i][1]}}</td>
+		<td>{{his[i][2]}}</td>
+		</tr>
+		
+	{% endfor %}
+</table>	
+
+</div>
+
+{% endblock %}
