@@ -1,0 +1,28 @@
+{% extends "header.html" %}
+{% block body %}
+<div class="container">
+	<div class="col-md-4" >
+		<img src="{{url_for('static',filename='poster_img/'+xpm[1])}}" style="margin-left:100px;margin-top:20px;height:365px">
+	</div>
+	<div class="col-md-8">
+		<h3 class="card-text" style="text-align:center"> {{xpm[0]}} </h3>
+		<p> You are about to {{type}} the movie {{xpm[0]}}</p>
+		{% if type=="Rent" %}
+			<p>Movie will be rented for <b>3 days</b> from the day you have purchased</p>
+			<p> Renting Cost: <b>INR 50</b> </p>
+		{% else %}
+			<p> Buying Cost: <b> INR 100 </b> </p>
+		{% endif %}	
+		
+		<h4> Make Payment</h4>
+		<p>Card Number: {{xc[0:4] + xc[4:-2].translate("*"*256) + xc[-2:]}}</p>
+		
+		{% if type=="Rent" %}
+			<a href="/{{'-'.join(xpm[0].split(' '))}}/rent"><input class="btn btn-info" style="margin-top:10px" type="submit" value="Payment"></a>
+		{% else %}
+			<a href="/{{'-'.join(xpm[0].split(' '))}}/buy"><input class="btn btn-info" style="margin-top:10px" type="submit" value="Payment"></a>
+		{% endif %}	
+	</div>	
+
+</div>
+{% endblock %}

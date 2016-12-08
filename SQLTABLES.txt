@@ -1,0 +1,117 @@
+		
+CREATE TABLE bill(
+		bill_id INT(10) AUTO_INCREMENT PRIMARY KEY,
+		uid INT(10),
+		card_number INT(16),
+		mid int(10),
+		ptype varchar(20),
+		
+		INDEX (uid),
+		INDEX (mid),
+		
+		FOREIGN KEY (uid) REFERENCES entries(uid) ON UPDATE CASCADE ON DELETE RESTRICT,	
+		FOREIGN KEY (mid) REFERENCES movies(mid) ON UPDATE CASCADE ON DELETE RESTRICT
+		)ENGINE=INNODB;		
+		
+CREATE TABLE entries(
+		uid int(11) AUTO_INCREMENT PRIMARY KEY,
+		username varchar(50),
+		password varchar(100),
+		email varchar(50)
+		)ENGINE=INNODB;	
+
+		
+CREATE TABLE purchase_history(
+		uid INT(11),
+		mname varchar(50),
+		p_date DATETIME,
+		type varchar(30)
+		)ENGINE=INNODB;
+		
+CREATE TABLE movies(
+		mid INT(10) AUTO_INCREMENT PRIMARY KEY,
+		plot varchar(1000),
+		mname varchar(50),
+		g_id INT(10),
+		act_id INT(10),
+		rate INT(10),
+		year varchar(20),
+		runtime  varchar(50),
+		r_date varchar(50),
+		poster_img varchar(100),
+		
+		INDEX(g_id),
+		INDEX(act_id),
+		
+		FOREIGN KEY (g_id) REFERENCES genre(g_id) ON UPDATE CASCADE ON DELETE RESTRICT,	
+		FOREIGN KEY (act_id) REFERENCES actor(actor_id) ON UPDATE CASCADE ON DELETE RESTRICT
+		)ENGINE=INNODB;
+		
+CREATE TABLE rent_subscription(
+		uid INT (11),
+		mid INT (11),
+		r_date DATE,
+		
+		INDEX (uid),
+		INDEX (mid),
+		
+		FOREIGN KEY (uid) REFERENCES entries(uid) ON UPDATE CASCADE ON DELETE RESTRICT,	
+		FOREIGN KEY (mid) REFERENCES movies(mid) ON UPDATE CASCADE ON DELETE RESTRICT
+		)ENGINE=INNODB;
+
+CREATE TABLE buy_subscription(
+		uid INT (11),
+		mid INT (11),
+		b_date DATE,
+		
+		INDEX (uid),
+		INDEX (mid),
+		
+		FOREIGN KEY (uid) REFERENCES entries(uid) ON UPDATE CASCADE ON DELETE RESTRICT,	
+		FOREIGN KEY (mid) REFERENCES movies(mid) ON UPDATE CASCADE ON DELETE RESTRICT
+		)ENGINE=INNODB;
+		
+CREATE TABLE actor(
+		actor_id INT(11),
+		actor_name varchar(30)
+		)ENGINE=INNODB;
+
+CREATE TABLE genre(
+		g_id INT(11),
+		gname varchar(30)
+		)ENGINE=INNODB;		
+
+select mid, plot,
+group_concat(distinct act_id order by act_ID) as actID,
+group_concat(distinct g_id order by G_ID) as GID 
+from movies where mname="friends";		
+	
+	DELIMITER $$
+	CREATE TRIGGER rent_add AFTER INSERT ON rent_subscription
+	FOR EACH ROW
+	BEGIN
+		update purch_history set uid=new.uid;
+		update purch_history set mname=(SELECT mname from movies where mid=new.mid);
+		update purch_history set p_date= now();
+		update purch_history set type="rent";
+	END $$
+	DELIMITER ;
+	
+	DELIMITER $$
+
+	CREATE TRIGGER buy_add AFTER INSERT ON buy_subscription
+	FOR EACH ROW
+	BEGIN
+		update purch_history set uid=new.uid;
+		update purch_history set mname=(SELECT mname from movies where mid=new.mid);
+		update purch_history set p_date= now();
+		update purch_history set type="buy";
+	END $$
+	DELIMITER ;
+	
+	
+	CREATE EVENT rent_check
+	ON SCHEDULE
+	EVERY 1 DAY_HOUR
+	DO
+	delete from rent_subscription where r_date<DATE_SUB(curdate(),interval 3 DAY)
